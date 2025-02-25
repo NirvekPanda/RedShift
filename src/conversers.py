@@ -18,9 +18,8 @@ def load_attack_and_target_models(args):
                         low_gpu_mem=args.low_gpu_mem,
                         seed=args.seed)
     preloaded_model = None
-    if args.attack_model == args.target_model and "gpt" not in args.attack_model:
-        print("Using same attack and target model. Using previously loaded model.")
-        preloaded_model = attackLM.model
+    print("Using same attack and target model. Using previously loaded model.")
+    preloaded_model = attackLM.model
 
     targetLM = TargetLM(model_name="lmsys/vicuna-7b-v1.5",
                         max_n_tokens=args.target_max_n_tokens,

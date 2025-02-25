@@ -1,0 +1,40 @@
+{
+  "os":  "Windows-10-10.0.22631-SP0",
+  "python":  "CPython 3.10.16",
+  "startedAt":  "2025-02-25T20:08:46.067918Z",
+  "args":  [
+    "--task-name",
+    "test",
+    "--attack-device",
+    "cpu",
+    "--target-device",
+    "cpu",
+    "--judge-model-device",
+    "cpu"
+  ],
+  "program":  "C:\\Users\\13102\\Documents\\GitHub\\RedShift\\src\\main.py",
+  "codePath":  "src\\main.py",
+  "git":  {
+    "remote":  "https://github.com/NirvekPanda/RedShift.git",
+    "commit":  "bfdfd83965a1f90a2ae19c9143ecb8c3118f30e7"
+  },
+  "root":  "C:\\Users\\13102\\Documents\\GitHub\\RedShift",
+  "host":  "MaximPC",
+  "executable":  "C:\\Users\\13102\\anaconda3\\envs\\jailbreak\\python.exe",
+  "codePathLocal":  "src\\main.py",
+  "cpu_count":  16,
+  "cpu_count_logical":  24,
+  "disk":  {
+    "/":  {
+      "total":  "999229173760",
+      "used":  "703889829888"
+    }
+  },
+  "memory":  {
+    "total":  "34160041984"
+  },
+  "cpu":  {
+    "count":  16,
+    "countLogical":  24
+  }
+}
