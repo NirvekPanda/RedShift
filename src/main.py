@@ -4,7 +4,7 @@ import argparse
 import rootutils
 from time import sleep
 from datetime import datetime
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModelForSequenceClassification
 
 
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
@@ -19,9 +19,9 @@ from src.data import load_data
 
 
 def main(args):
-    model_name = "lmsys/vicuna-7b-v1.5"  
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
+    attack_target_model_name = "lmsys/vicuna-7b-v1.5"  
+    tokenizer = AutoTokenizer.from_pretrained(attack_target_model_name)
+    model = AutoModelForCausalLM.from_pretrained(attack_target_model_name, device_map="auto")
 
     seed_everything(args.seed)
     root_path = rootutils.find_root(search_from=__file__, indicator=".project-root")
