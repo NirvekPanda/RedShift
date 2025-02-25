@@ -9,7 +9,7 @@ from src.config import VICUNA_7B_PATH, VICUNA_13B_PATH, LLAMA2_PATH, LLAMA3_PATH
 
 def load_attack_and_target_models(args):
     # Load attack model and tokenizer
-    attackLM = AttackLM(model_name=args.attack_model,
+    attackLM = AttackLM(model_name="lmsys/vicuna-7b-v1.5",
                         max_n_tokens=args.attack_max_n_tokens,
                         max_n_attack_attempts=args.max_n_attack_attempts,
                         temperature=args.attack_temperature,  # init to 1
@@ -22,7 +22,7 @@ def load_attack_and_target_models(args):
         print("Using same attack and target model. Using previously loaded model.")
         preloaded_model = attackLM.model
 
-    targetLM = TargetLM(model_name=args.target_model,
+    targetLM = TargetLM(model_name="lmsys/vicuna-7b-v1.5",
                         max_n_tokens=args.target_max_n_tokens,
                         temperature=args.target_temperature,  # init to 0
                         top_p=args.target_top_p,  # init to 1
@@ -62,7 +62,6 @@ class AttackLM():
         self.model, self.template = load_indiv_model(model_name,
                                                      attacker_model=True,
                                                      device=device,
-                                                     low_gpu_mem=low_gpu_mem,
                                                      seed=seed)
 
         if "vicuna" in model_name or "llama" in model_name:
@@ -181,7 +180,7 @@ class TargetLM():
                                                          seed=seed)
         else:
             self.model = preloaded_model
-            _, self.template = get_model_path_and_template(model_name)
+            
 
     def get_response(self, prompts_list, dataset, batch_size, instruction_placeholder, defense_type='none', gen_num=1):
         """
@@ -271,79 +270,32 @@ class TargetLM():
         return outputs_list
 
 
+#changed it to always use vicuna
 def load_indiv_model(model_name, seed, attacker_model=True, device=None, low_gpu_mem=False):
-    model_path, template = get_model_path_and_template(model_name)
-    if "gpt" in model_name:
-        lm = GPT(model_name, seed=seed)
-    else:
-        if low_gpu_mem:
-            # Split model across multiple devices
-            model = AutoModelForCausalLM.from_pretrained(
-                model_path,
-                torch_dtype=torch.float16,
-                low_cpu_mem_usage=True,
-                device_map="balanced").eval()
-        else:
-            model = AutoModelForCausalLM.from_pretrained(
-                model_path,
-                torch_dtype=torch.float16,
-                low_cpu_mem_usage=True).eval().to(device)
-        tokenizer = AutoTokenizer.from_pretrained(
-            model_path,
-            use_fast=False
-        )
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        torch_dtype=torch.float16,
+        low_cpu_mem_usage=True).eval().to(device)
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_name,
+        use_fast=False
+    )
 
-        if 'llama-2' in model_path.lower():
-            tokenizer.pad_token = tokenizer.unk_token
-            tokenizer.padding_side = 'left'
-        if 'llama-3' in model_path.lower():
-            tokenizer.pad_token = tokenizer.eos_token
-            tokenizer.padding_side = 'left'
-        if 'vicuna' in model_path.lower():
-            tokenizer.pad_token = tokenizer.eos_token
-            tokenizer.padding_side = 'left'
-        if not tokenizer.pad_token:
-            tokenizer.pad_token = tokenizer.eos_token
+    if 'llama-2' in model_name.lower():
+        tokenizer.pad_token = tokenizer.unk_token
+        tokenizer.padding_side = 'left'
+    if 'llama-3' in model_name.lower():
+        tokenizer.pad_token = tokenizer.eos_token
+        tokenizer.padding_side = 'left'
+    if 'vicuna' in model_name.lower():
+        tokenizer.pad_token = tokenizer.eos_token
+        tokenizer.padding_side = 'left'
+    if not tokenizer.pad_token:
+        tokenizer.pad_token = tokenizer.eos_token
 
-        lm = HuggingFace(model_name, model, tokenizer)
+    lm = HuggingFace(model_name, model, tokenizer)
 
-    return lm, template
+    return lm, "vicuna_v1.1"
 
 
-def get_model_path_and_template(model_name):
-    full_model_dict = {
-        "gpt-4": {
-            "path": "gpt-4-0613",
-            "template": "gpt-4"
-        },
-        "gpt-3.5-turbo-0613": {
-            "path": "gpt-3.5-turbo-0613",
-            "template": "gpt-3.5-turbo"
-        },
-        "gpt-3.5-turbo-1106": {
-            "path": "gpt-3.5-turbo-1106",
-            "template": "gpt-3.5-turbo"
-        },
-        "vicuna-7b": {
-            "path": VICUNA_7B_PATH,
-            "template": "vicuna_v1.1"
-        },
-        "vicuna-13b": {
-            "path": VICUNA_13B_PATH,
-            "template": "vicuna_v1.1"
-        },
-        "llama-2": {
-            "path": LLAMA2_PATH,
-            "template": "llama-2"
-        },
-        "llama-2-sys": {
-            "path": LLAMA2_PATH,
-            "template": "llama-2"
-        },
-        "llama-3": {
-            "path": LLAMA3_PATH,
-            "template": "llama-3"
-        },
-    }
-    path, template = full_model_dict[model_name]["path"], full_model_dict[model_name]["template"]
-    return path, template
+

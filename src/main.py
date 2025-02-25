@@ -18,11 +18,10 @@ from src.common import conv_template, seed_everything
 from src.data import load_data
 
 
-def main(args):
-    attack_target_model_name = "lmsys/vicuna-7b-v1.5"  
-    tokenizer = AutoTokenizer.from_pretrained(attack_target_model_name)
-    model = AutoModelForCausalLM.from_pretrained(attack_target_model_name, device_map="auto")
 
+
+
+def main(args):
     seed_everything(args.seed)
     root_path = rootutils.find_root(search_from=__file__, indicator=".project-root")
     starttime = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
@@ -32,7 +31,7 @@ def main(args):
     dataset = load_data(args.dataset, args.dataset_size)
 
     # Initialize models
-    attackLM, targetLM = model, model
+    attackLM, targetLM = load_attack_and_target_models(args)
     judgeLM = load_judge(args)
 
     for global_iteration in range(args.n_global_iterations):
@@ -161,12 +160,6 @@ if __name__ == '__main__':
 
     ########### Attack model parameters ##########
     parser.add_argument(
-        "--attack-model",
-        default="vicuna-13b",
-        help="Name of attacking model.",
-        choices=["vicuna-7b", "vicuna-13b", "gpt-3.5-turbo-0613", "gpt-3.5-turbo-1106", "gpt-4"]
-    )
-    parser.add_argument(
         "--attack-max-n-tokens",
         type=int,
         default=1024,
@@ -204,12 +197,6 @@ if __name__ == '__main__':
     ##################################################
 
     ########### Target model parameters ##########
-    parser.add_argument(
-        "--target-model",
-        default="gpt-3.5-turbo-0613",
-        help="Name of target model.",
-        choices=["vicuna-7b", "vicuna-13b", "llama-2", "llama-2-sys", "llama-3", "gpt-3.5-turbo-0613", "gpt-3.5-turbo-1106", "gpt-4"]
-    )
     parser.add_argument(
         "--target-max-n-tokens",
         type=int,

@@ -46,8 +46,8 @@ class TransformerJudge(JudgeBase):
         self.max_length = args.target_max_n_tokens
         self.batch_size = args.judge_model_batch_size
         self.device = torch.device(args.judge_model_device if torch.cuda.is_available() else "cpu")
-        self.model = AutoModelForSequenceClassification.from_pretrained(args.transformer_model_path).to(self.device)
-        self.tokenizer = AutoTokenizer.from_pretrained(args.transformer_model_path)
+        self.model = AutoModelForSequenceClassification.from_pretrained("zgxiao/deberta-v3-large-judge-model").to(self.device)
+        self.tokenizer = AutoTokenizer.from_pretrained("zgxiao/deberta-v3-large-judge-model")
 
     def predict(self, instructions, responses):
         inputs = self.tokenizer(instructions, responses, padding=True, truncation=True, max_length=self.max_length,
