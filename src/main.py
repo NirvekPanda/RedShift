@@ -250,9 +250,9 @@ if __name__ == '__main__':
     ############ Judge model parameters ##########
     parser.add_argument(
         "--judge-model",
-        default="deberta",
+        default="transformer",
         help="Name of judge model.",
-        choices=["deberta",  "no-judge"]
+        choices=["transformer",  "no-judge"]
     )
     parser.add_argument(
         "--judge-max-n-tokens",

@@ -3,17 +3,13 @@ import random
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-from src.config import DEBERTA_PATH
-
-
 def load_judge(args):
     if args.judge_model == "no-judge":
         return NoJudge(args)
-    elif args.judge_model == "deberta":
-        return DebertaJudge(args)
+    elif args.judge_model == "transformer":
+        return TransformerJudge(args)
     else:
         raise NotImplementedError
-
 
 class JudgeBase:
     def __init__(self, args):
@@ -36,7 +32,6 @@ class JudgeBase:
     def score(self, output_dict_list):
         raise NotImplementedError
 
-
 class NoJudge(JudgeBase):
     def __init__(self, args):
         super(NoJudge, self).__init__(args)
@@ -45,15 +40,14 @@ class NoJudge(JudgeBase):
     def score(self, output_dict_list):
         return [[1] * len(stream_output_dict_list) for stream_output_dict_list in output_dict_list]
 
-
-class DebertaJudge(JudgeBase):
+class TransformerJudge(JudgeBase):
     def __init__(self, args):
-        super(DebertaJudge, self).__init__(args)
+        super(TransformerJudge, self).__init__(args)
         self.max_length = args.target_max_n_tokens
         self.batch_size = args.judge_model_batch_size
         self.device = torch.device(args.judge_model_device if torch.cuda.is_available() else "cpu")
-        self.model = AutoModelForSequenceClassification.from_pretrained(DEBERTA_PATH).to(self.device)
-        self.tokenizer = AutoTokenizer.from_pretrained(DEBERTA_PATH)
+        self.model = AutoModelForSequenceClassification.from_pretrained(args.transformer_model_path).to(self.device)
+        self.tokenizer = AutoTokenizer.from_pretrained(args.transformer_model_path)
 
     def predict(self, instructions, responses):
         inputs = self.tokenizer(instructions, responses, padding=True, truncation=True, max_length=self.max_length,
@@ -82,13 +76,10 @@ class DebertaJudge(JudgeBase):
             scores.append(score)
             predictions.append(stream_predictions)
 
-            # random select 1 error examples from each stream
             stream_error_example_indices = [i for i in range(len(stream_predictions)) if stream_predictions[i] == 0]
-            # prevent index out of range
             if len(stream_error_example_indices) > 0:
                 error_examples.append(stream_output_dict_list[random.choice(stream_error_example_indices)]["output"])
             else:
                 error_examples.append("No error example found")
 
         return scores, predictions, error_examples
-
