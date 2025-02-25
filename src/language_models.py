@@ -81,6 +81,7 @@ class HuggingFace(LanguageModel):
         torch.cuda.empty_cache()
 
         outputs_list = [output.strip() for output in outputs_list]
+        print("here's the output list:", outputs_list)
         return outputs_list
 
     def extend_eos_tokens(self):
