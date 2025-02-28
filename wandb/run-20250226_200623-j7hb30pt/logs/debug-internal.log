@@ -1,0 +1,15 @@
+{"time":"2025-02-26T20:06:23.2796326-08:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"C:\\Users\\daris\\Desktop\\School\\RedShift\\wandb\\run-20250226_200623-j7hb30pt\\logs\\debug-core.log"}
+{"time":"2025-02-26T20:06:23.3943313-08:00","level":"INFO","msg":"created new stream","id":"j7hb30pt"}
+{"time":"2025-02-26T20:06:23.3948418-08:00","level":"INFO","msg":"stream: started","id":"j7hb30pt"}
+{"time":"2025-02-26T20:06:23.3948418-08:00","level":"INFO","msg":"sender: started","stream_id":"j7hb30pt"}
+{"time":"2025-02-26T20:06:23.3948418-08:00","level":"INFO","msg":"writer: Do: started","stream_id":"j7hb30pt"}
+{"time":"2025-02-26T20:06:23.3948418-08:00","level":"INFO","msg":"handler: started","stream_id":"j7hb30pt"}
+{"time":"2025-02-26T20:06:23.7561603-08:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-02-26T20:22:41.1428484-08:00","level":"INFO","msg":"stream: closing","id":"j7hb30pt"}
+{"time":"2025-02-26T20:22:41.1428484-08:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-02-26T20:22:41.1440561-08:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-02-26T20:22:41.6874179-08:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-02-26T20:22:41.8297826-08:00","level":"INFO","msg":"handler: closed","stream_id":"j7hb30pt"}
+{"time":"2025-02-26T20:22:41.8297826-08:00","level":"INFO","msg":"sender: closed","stream_id":"j7hb30pt"}
+{"time":"2025-02-26T20:22:41.8297826-08:00","level":"INFO","msg":"writer: Close: closed","stream_id":"j7hb30pt"}
+{"time":"2025-02-26T20:22:41.8297826-08:00","level":"INFO","msg":"stream: closed","id":"j7hb30pt"}

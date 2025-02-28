@@ -110,10 +110,12 @@ Here are some examples of adversarial prompt templates:
                                                         objective_string,
                                                         start_string)
             print("Finished getting adversarial prompts.")
-
+            
+            # print(f'attk list len = {len(extracted_attack_list)}')
+                
             # Extract prompts and improvements
-            adv_prompt_list = [attack["prompt"] for attack in extracted_attack_list]
-            improv_list = [attack["improvement"] for attack in extracted_attack_list]
+            adv_prompt_list = [attack["prompt"] for attack in extracted_attack_list if attack is not None]
+            improv_list = [attack["improvement"] for attack in extracted_attack_list if attack is not None]
 
             # Get target responses
             target_response_list = targetLM.get_response(adv_prompt_list,

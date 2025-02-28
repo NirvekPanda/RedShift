@@ -8,8 +8,18 @@ from src.config import VICUNA_7B_PATH, VICUNA_13B_PATH, LLAMA2_PATH, LLAMA3_PATH
 
 
 def load_attack_and_target_models(args):
+    
+    model_list = ["lmsys/vicuna-7b-v1.5","lmsys/vicuna-13b-v1.5",
+                  "deepseek-ai/DeepSeek-R1","deepseek-ai/DeepSeek-V3",
+                  "meta-llama/Llama-2-7b-chat-hf","meta-llama/Meta-Llama-3-8B",
+                  "microsoft/phi-4", "microsoft/Phi-4-mini-instruct",
+                  "microsoft/deberta-v3-base", ""]
+    
+    attack_mod = model_list[1]
+    target_mod = "lmsys/vicuna-7b-v1.5"
+    
     # Load attack model and tokenizer
-    attackLM = AttackLM(model_name="lmsys/vicuna-7b-v1.5",
+    attackLM = AttackLM(model_name=attack_mod,
                         max_n_tokens=args.attack_max_n_tokens,
                         max_n_attack_attempts=args.max_n_attack_attempts,
                         temperature=args.attack_temperature,  # init to 1
@@ -21,7 +31,7 @@ def load_attack_and_target_models(args):
     print("Using same attack and target model. Using previously loaded model.")
     preloaded_model = attackLM.model
 
-    targetLM = TargetLM(model_name="lmsys/vicuna-7b-v1.5",
+    targetLM = TargetLM(model_name=target_mod,
                         max_n_tokens=args.target_max_n_tokens,
                         temperature=args.target_temperature,  # init to 0
                         top_p=args.target_top_p,  # init to 1
@@ -124,7 +134,13 @@ class AttackLM():
                 orig_index = indices_to_regenerate[i]
                 if "gpt" not in self.model_name:
                     full_output = init_message + full_output
-
+ 
+    
+                print(f"\n --*-- output: {full_output} \n")
+                print(f"--*-- objective: {objective_string} \n focus: {start_string} \n") 
+                
+                
+                
                 attack_dict, json_str = common.extract_json(full_output,
                                                             objective_string=objective_string,
                                                             focus_string=start_string)
@@ -269,10 +285,12 @@ class TargetLM():
         return outputs_list
 
 
-#changed it to always use vicuna
+#changed it to use given model passed in above
 def load_indiv_model(model_name, seed, attacker_model=True, device=None, low_gpu_mem=False):
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
+        # load_in_8bit=True, # testing for deepseek
+        trust_remote_code=True, # enabled for deepseek-v3
         torch_dtype=torch.float16,
         low_cpu_mem_usage=True).eval().to(device)
     tokenizer = AutoTokenizer.from_pretrained(
