@@ -150,9 +150,13 @@ Here are some examples of adversarial prompt templates:
             if any([score == 100 for score in judge_scores]):
                 print("Jailbreak all samples. Exiting.")
                 break
+        
+            print(f"Finished local iteration {iteration} \n")
 
+            
             # Sleep
             sleep(args.sleeptime)
+        print(f"Finished global iteration {global_iteration} \n")
 
     logger.finish()
 

@@ -1,7 +1,0 @@
-{"time":"2025-02-26T22:26:06.0312209-08:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"C:\\Users\\daris\\Desktop\\School\\RedShift\\wandb\\run-20250226_222606-bka6tfks\\logs\\debug-core.log"}
-{"time":"2025-02-26T22:26:06.1413376-08:00","level":"INFO","msg":"created new stream","id":"bka6tfks"}
-{"time":"2025-02-26T22:26:06.1413376-08:00","level":"INFO","msg":"stream: started","id":"bka6tfks"}
-{"time":"2025-02-26T22:26:06.1413376-08:00","level":"INFO","msg":"handler: started","stream_id":"bka6tfks"}
-{"time":"2025-02-26T22:26:06.1413376-08:00","level":"INFO","msg":"writer: Do: started","stream_id":"bka6tfks"}
-{"time":"2025-02-26T22:26:06.1413376-08:00","level":"INFO","msg":"sender: started","stream_id":"bka6tfks"}
-{"time":"2025-02-26T22:26:06.4671365-08:00","level":"INFO","msg":"Starting system monitor"}
