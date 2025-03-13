@@ -18,13 +18,24 @@ pip install -r requirements.txt
 ### Run script in git bash
 
 Use this for gpu
-    ```
-    python src/main.py --task-name "test"
-    ```
+```
+python src/main.py --task-name "test"
+```
 
 Or this for cpu:
-    ```
-    python src/main.py --task-name "test" --attack-device "cpu" --target-device "cpu" --judge-model-device "cpu"
-    ```
+```
+python src/main.py --task-name "test" --attack-device "cpu" --target-device "cpu" --judge-model-device "cpu"
+```
+
+
+If you get this error:
+![alt text](image.png)
+
+Do this:
+```
+conda deactivate
+conda activate jailbreak
+```
+And the just run it again  
 
 ------------------------

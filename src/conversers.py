@@ -15,8 +15,7 @@ def load_attack_and_target_models(args):
                   "microsoft/phi-4", "microsoft/Phi-4-mini-instruct",
                   "microsoft/deberta-v3-base", ""]
     
-    attack_mod = model_list[1]
-    target_mod = "lmsys/vicuna-7b-v1.5"
+    attack_mod, target_mod = model_list[0], model_list[0]
     
     # Load attack model and tokenizer
     attackLM = AttackLM(model_name=attack_mod,
@@ -287,6 +286,7 @@ class TargetLM():
 
 #changed it to use given model passed in above
 def load_indiv_model(model_name, seed, attacker_model=True, device=None, low_gpu_mem=False):
+    template = get_model_template(model_name)
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         # load_in_8bit=True, # testing for deepseek
@@ -312,7 +312,24 @@ def load_indiv_model(model_name, seed, attacker_model=True, device=None, low_gpu
 
     lm = HuggingFace(model_name, model, tokenizer)
 
-    return lm, "vicuna_v1.1"
+    return lm, template
 
-
+def get_model_template(model_name):
+    #TODO add support additional/custom models
+    full_model_dict = {
+        "lmsys/vicuna-7b-v1.5": {
+            "template": "vicuna_v1.1"
+        },
+        "lmsys/vicuna-13b-v1.5": {
+            "template": "vicuna_v1.1"
+        },
+        "meta-llama/Llama-2-7b-chat-hf": {
+            "template": "llama-2"
+        },
+        "meta-llama/Meta-Llama-3-8B": {
+            "template": "llama-3"
+        },
+    }
+    template = full_model_dict[model_name]["template"]
+    return template
 
