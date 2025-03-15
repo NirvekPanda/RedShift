@@ -100,6 +100,7 @@ Here are some examples of adversarial prompt templates:
         # Begin train
         for iteration in range(1, args.n_iterations + 1):
             print(f"""\n{'=' * 36}\nLocal Iteration: {iteration}\n{'=' * 36}\n""")
+            print(f"The input prompt for the attackLM: \n {processed_response_list[0]}")
             if iteration > 1:
                 processed_response_list = [process_target_response(score) for score in judge_scores]
 
