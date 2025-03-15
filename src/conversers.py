@@ -29,12 +29,14 @@ def load_attack_and_target_models(args):
     preloaded_model = None
     print("Using same attack and target model. Using previously loaded model.")
     preloaded_model = attackLM.model
+    preloaded_template = AttackLM.template
 
     targetLM = TargetLM(model_name=target_mod,
                         max_n_tokens=args.target_max_n_tokens,
                         temperature=args.target_temperature,  # init to 0
                         top_p=args.target_top_p,  # init to 1
                         preloaded_model=preloaded_model,
+                        preloaded_template=preloaded_template,
                         device=args.target_device,
                         low_gpu_mem=args.low_gpu_mem,
                         seed=args.seed)
@@ -178,6 +180,7 @@ class TargetLM():
                  max_n_tokens: int,
                  temperature: float,
                  top_p: float,
+                 preloaded_template: str,
                  preloaded_model: object = None,
                  device=None,
                  low_gpu_mem=False,
@@ -194,6 +197,7 @@ class TargetLM():
                                                          seed=seed)
         else:
             self.model = preloaded_model
+            self.template = preloaded_template
             
 
     def get_response(self, prompts_list, dataset, batch_size, instruction_placeholder, defense_type='none', gen_num=1):
