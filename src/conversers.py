@@ -29,7 +29,7 @@ def load_attack_and_target_models(args):
     preloaded_model = None
     print("Using same attack and target model. Using previously loaded model.")
     preloaded_model = attackLM.model
-    preloaded_template = AttackLM.template
+    preloaded_template = attackLM.template
 
     targetLM = TargetLM(model_name=target_mod,
                         max_n_tokens=args.target_max_n_tokens,
