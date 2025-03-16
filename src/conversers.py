@@ -9,13 +9,8 @@ from src.config import VICUNA_7B_PATH, VICUNA_13B_PATH, LLAMA2_PATH, LLAMA3_PATH
 
 def load_attack_and_target_models(args):
     
-    model_list = ["lmsys/vicuna-7b-v1.5","lmsys/vicuna-13b-v1.5",
-                  "deepseek-ai/DeepSeek-R1","deepseek-ai/DeepSeek-V3",
-                  "meta-llama/Llama-2-7b-chat-hf","meta-llama/Meta-Llama-3-8B",
-                  "microsoft/phi-4", "microsoft/Phi-4-mini-instruct",
-                  "microsoft/deberta-v3-base", ""]
-    
-    attack_mod, target_mod = model_list[0], model_list[0]
+
+    attack_mod, target_mod = args.attack_model, args.target_model
     
     # Load attack model and tokenizer
     attackLM = AttackLM(model_name=attack_mod,
@@ -26,6 +21,8 @@ def load_attack_and_target_models(args):
                         device=args.attack_device,
                         low_gpu_mem=args.low_gpu_mem,
                         seed=args.seed)
+    
+    #TODO: Make this not hardcoded
     preloaded_model = None
     print("Using same attack and target model. Using previously loaded model.")
     preloaded_model = attackLM.model
@@ -261,6 +258,11 @@ class TargetLM():
                     elif "replicate" in self.model_name:
                         full_prompts.append({"system_prompt": conv.system_message,
                                              "prompt": prompt})
+                    elif "deepseek" in self.model_name:
+                        #TODO: trying this out
+                        #https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B#usage-recommendations 
+                        #that says to avoid using system prompts but fastchat is weird so idk what actually ends up as a system prompt
+                        full_prompts.append({"prompt": conv.system_message + prompt})
                     else:
                         conv.append_message(conv.roles[1], None)
                         full_prompts.append(conv.get_prompt())
@@ -333,6 +335,11 @@ def get_model_template(model_name):
         "meta-llama/Meta-Llama-3-8B": {
             "template": "llama-3"
         },
+        "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B": {
+            "template": "deepseek-chat"
+        }
+
+        
     }
     template = full_model_dict[model_name]["template"]
     return template

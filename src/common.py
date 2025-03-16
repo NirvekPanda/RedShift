@@ -5,6 +5,7 @@ import torch
 import ast
 import logging
 from fastchat.model import get_conversation_template
+from fastchat.conversation import get_conv_template
 
 
 def extract_json(s, objective_string, focus_string):
@@ -55,6 +56,8 @@ def extract_json(s, objective_string, focus_string):
 
 
 def conv_template(template_name):
+    if template_name == "deepseek-chat":
+        return get_conv_template(template_name)
     template = get_conversation_template(template_name)
     if template.name == 'llama-2':
         template.sep2 = template.sep2.strip()

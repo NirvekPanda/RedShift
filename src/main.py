@@ -93,8 +93,14 @@ Here are some examples of adversarial prompt templates:
             print("*" * 100)
 
         processed_response_list = [init_msg for _ in range(args.n_streams)]
+
+        #This print statement is key for checking if the template is properly initialized when 
+        #adding new custom models (and consequently their fastchat templates)
+        #print(f"Attack lm template: {attackLM.template}")
         convs_list = [conv_template(attackLM.template) for _ in range(args.n_streams)]
         for conv in convs_list:
+            #print("\n\n")
+            #print(conv)
             conv.set_system_message(system_prompt)
 
         # Begin train
@@ -167,6 +173,12 @@ if __name__ == '__main__':
 
     ########### Attack model parameters ##########
     parser.add_argument(
+        "--attack-model",
+        default="lmsys/vicuna-7b-v1.5",
+        help="Name of attacking model.",
+        choices=["lmsys/vicuna-7b-v1.5", "meta-llama/Llama-2-7b-chat-hf", "meta-llama/Meta-Llama-3-8B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"]
+    )
+    parser.add_argument(
         "--attack-max-n-tokens",
         type=int,
         default=1024,
@@ -204,6 +216,12 @@ if __name__ == '__main__':
     ##################################################
 
     ########### Target model parameters ##########
+    parser.add_argument(
+        "--target-model",
+        default="lmsys/vicuna-7b-v1.5",
+        help="Name of target model.",
+        choices=["lmsys/vicuna-7b-v1.5", "meta-llama/Llama-2-7b-chat-hf", "meta-llama/Meta-Llama-3-8B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"]
+    )
     parser.add_argument(
         "--target-max-n-tokens",
         type=int,

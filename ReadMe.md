@@ -26,15 +26,19 @@ pip install -r requirements.txt
 
 ### Run script in git bash
 
-Use this for gpu
+Use this for vicuna 7b attack and target
 ```
-python src/main.py --task-name "test"
+python src/main.py --task-name "vicuna-attack-target"
 ```
 
-Or this for cpu:
+for running deepseek attack and target
 ```
-python src/main.py --task-name "test" --attack-device "cpu" --target-device "cpu" --judge-model-device "cpu"
+python src/main.py --task-name "deepseek-attack-target" --attack-temperature "0.6"  --attack-model "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B" --target-model "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"--target-temperature "0.6"
 ```
+
+If one does not have a Nvidia gpu, simply add these commands to the run script:  
+
+`--attack-device "cpu" --target-device "cpu" --judge-model-device "cpu"`
 
 
 If you get this error:
