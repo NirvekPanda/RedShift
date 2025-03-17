@@ -33,7 +33,7 @@ python src/main.py --task-name "vicuna-attack-target"
 
 for running deepseek attack and target
 ```
-python src/main.py --task-name "deepseek-attack-target" --attack-temperature "0.6"  --attack-model "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B" --target-model "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"--target-temperature "0.6"
+python src/main.py --task-name "deepseek-attack-target" --attack-temperature "0.6"  --attack-model "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B" --target-model "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B" --target-temperature "0.6"
 ```
 
 If one does not have a Nvidia gpu, simply add these commands to the run script:  
