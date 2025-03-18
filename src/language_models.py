@@ -30,6 +30,9 @@ class HuggingFace(LanguageModel):
         super(HuggingFace, self).__init__(model_name)
         self.model = model
         self.tokenizer = tokenizer
+
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+
         self.eos_token_ids = [self.tokenizer.eos_token_id]
 
     def batched_generate(self,
@@ -37,7 +40,17 @@ class HuggingFace(LanguageModel):
                          max_n_tokens: int,
                          temperature: float,
                          top_p: float = 1.0, ):
-        inputs = self.tokenizer(full_prompts_list, return_tensors='pt', padding=True)
+        
+        processed_prompts = []
+        for prompt in full_prompts_list:
+            if isinstance(prompt, dict) and 'prompt' in prompt:
+                processed_prompts.append(prompt['prompt'])
+            elif isinstance(prompt, str):
+                processed_prompts.append(prompt)
+            else:
+                processed_prompts.append(str(prompt))
+        
+        inputs = self.tokenizer(processed_prompts, return_tensors='pt', padding=True)
         inputs = {k: v.to(self.model.device.index) for k, v in inputs.items()}
 
         for i in range(self.MAX_ERROR_RETRY):

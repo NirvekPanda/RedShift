@@ -87,7 +87,7 @@ class AttackLM():
         Returns:
         - List of generated outputs (dictionaries) or None for failed generations.
         """
-
+        print(f"Gen atks convs: {len(convs_list)} and prompts: {len(prompts_list)}.")
         assert len(convs_list) == len(prompts_list), "Mismatch between number of conversations and prompts."
 
         n_streams = len(convs_list)
