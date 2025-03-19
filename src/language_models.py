@@ -174,7 +174,11 @@ class GPT(LanguageModel):
                          max_n_tokens: int,
                          temperature: float,
                          top_p: float = 1.0):
-        partial_generate = partial(self.generate, max_n_tokens=max_n_tokens, temperature=temperature, top_p=top_p)
+        partial_generate = partial(self.generate, 
+                                   max_n_tokens=max_n_tokens, 
+                                   temperature=temperature, 
+                                   top_p=top_p
+                                   )
         with ThreadPoolExecutor(max_workers=len(convs_list)) as executor:
             results = list(executor.map(partial_generate, convs_list))
 
