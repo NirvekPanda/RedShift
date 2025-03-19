@@ -71,7 +71,7 @@ class AttackLM():
                                                      device=device,
                                                      seed=seed)
 
-        if "vicuna" in model_name or "llama" in model_name or "deepseek" in model_name:
+        if "vicuna" in model_name or "llama" in model_name or "deepseek" in model_name or "zephyr" in model_name:
             self.model.extend_eos_tokens()
 
     def get_attack(self, convs_list, prompts_list, batch_size, objective_string, start_string):
