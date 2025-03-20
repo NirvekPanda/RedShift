@@ -176,7 +176,7 @@ if __name__ == '__main__':
         "--attack-model",
         default="lmsys/vicuna-7b-v1.5",
         help="Name of attacking model.",
-        choices=["lmsys/vicuna-7b-v1.5", "meta-llama/Llama-2-7b-chat-hf", "meta-llama/Meta-Llama-3-8B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"]
+        choices=["lmsys/vicuna-7b-v1.5", "meta-llama/Llama-2-7b-chat-hf", "meta-llama/Meta-Llama-3-8B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"]
     )
     parser.add_argument(
         "--attack-max-n-tokens",
@@ -220,7 +220,7 @@ if __name__ == '__main__':
         "--target-model",
         default="lmsys/vicuna-7b-v1.5",
         help="Name of target model.",
-        choices=["lmsys/vicuna-7b-v1.5", "meta-llama/Llama-2-7b-chat-hf", "meta-llama/Meta-Llama-3-8B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"]
+        choices=["lmsys/vicuna-7b-v1.5", "meta-llama/Llama-2-7b-chat-hf", "meta-llama/Meta-Llama-3-8B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"]
     )
     parser.add_argument(
         "--target-max-n-tokens",
