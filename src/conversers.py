@@ -71,7 +71,7 @@ class AttackLM():
                                                      device=device,
                                                      seed=seed)
 
-        if "vicuna" in model_name or "llama" in model_name:
+        if "vicuna" in model_name or "llama" in model_name or "deepseek" in model_name or "zephyr" in model_name:
             self.model.extend_eos_tokens()
 
     def get_attack(self, convs_list, prompts_list, batch_size, objective_string, start_string):
@@ -313,6 +313,12 @@ def load_indiv_model(model_name, seed, attacker_model=True, device=None, low_gpu
     if 'vicuna' in model_name.lower():
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.padding_side = 'left'
+    if 'deepseek' in model_name.lower():
+        tokenizer.pad_token = tokenizer.eos_token
+        tokenizer.padding_side = 'left'
+    if 'zephyr' in model_name.lower():
+        tokenizer.pad_token = tokenizer.eos_token
+        tokenizer.padding_side = 'left'
     if not tokenizer.pad_token:
         tokenizer.pad_token = tokenizer.eos_token
 
@@ -337,8 +343,9 @@ def get_model_template(model_name):
         },
         "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B": {
             "template": "deepseek-chat"
+        }, "HuggingFaceH4/zephyr-7b-alpha": {
+            "template": "zephyr"
         }
-
         
     }
     template = full_model_dict[model_name]["template"]
