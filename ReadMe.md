@@ -4,9 +4,7 @@
 This isn't a bad error. It's just the llm failing to follow the instructions.
 
 ### Current TODO:  
-Run it till the end
-
-
+Finish benchmarking 
 
 ------
 ## Running locally:
